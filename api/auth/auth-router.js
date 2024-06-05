@@ -16,7 +16,7 @@ router.post('/register', async (req, res) => {
   res.status(201).json(newuser)
 
  } catch(e){
-  if(e){
+  if(e.code === 'SQLITE_CONSTRAINT'){
     res.status(400).json({message:'username taken'})
   } else {
     res.status(500).json({message:'Internal server error'})
