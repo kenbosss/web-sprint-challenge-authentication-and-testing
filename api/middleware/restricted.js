@@ -21,10 +21,10 @@ module.exports = (req, res, next) => {
   JWT.verify(token, JWT_SECRET, (err, decodedToken) => {
     if (err) {
       return res.status(401).json({message:'token invalid'})
-    } else {
+    } 
 req.decodedToken = decodedToken
 next()
-    } 
+  
   })
 
 }
