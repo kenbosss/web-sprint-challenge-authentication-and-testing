@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const bycrpt = require('bcrypt.js')
+const bycrpt = require('bcryptjs')
 const db = require('../../data/dbConfig')
 const jwt = require('jsonwebtoken')
 const JWT_SECRET = process.env.JWT_SECRET || 'shh'
