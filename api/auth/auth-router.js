@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const bycrpt = require('bcryptjs')
+const bcrypt = require('bcryptjs')
 const db = require('../../data/dbConfig')
 const jwt = require('jsonwebtoken')
 const JWT_SECRET = process.env.JWT_SECRET || 'shh'
@@ -10,7 +10,7 @@ router.post('/register', async (req, res) => {
   return res.status(400).json({message: 'username and password required'})
  }
  try {
- const hashed = bycrpt.hashSync(password,8)
+ const hashed = bcrypt.hashSync(password,8)
   const[id] = await db('user').insert({username,password:hashed})
   const newuser = await db('user').where({id}).first()
   res.status(201).json(newuser)
@@ -29,7 +29,7 @@ router.post('/login', async (req, res) => {
   const { username, password} =req.body
 try{
   const user = await db('user').select('*').where({username}).first()
-  if(user && await bycrpt.compareSync(password,user.password)){
+  if(user && await bcrypt.compareSync(password, user.password)){
     const payload = {userId: user.id}
     const token = jwt.sign(payload,JWT_SECRET, {expiresIn:'1h'})
     res.json({message:`welcome ${user.username, token}`})
