@@ -10,7 +10,7 @@ router.post('/register', async (req, res) => {
    return res.status(400).json({message:'username and password required'})
  }
  try {
- const hashed = bcrypt.hash(password,8)
+ const hashed = bcrypt.hashSync(password,8)
   const [id] = await db('users').insert({username , password:hashed})
   const newuser = await db('users').where({id}).first()
   res.status(201).json(newuser)
@@ -32,10 +32,10 @@ router.post('/login', async (req, res) => {
 try{
   const user = await db('users').select('*').where({username}).first()
   console.log(user)
-  if(user && bcrypt.compareSync(password, user.password)){
+  if(user && await bcrypt.compare(password, user.password)){
     const payload = {userId: user.id}
     const token = jwt.sign(payload,JWT_SECRET, {expiresIn:'1h'})
-    res.status(200).json({message:`welcome ${user.username, token}`})
+    res.status(200).json({message:`welcome, ${user.username}`,token})
   } else {
     res.status(401).json({message:'invalid credentials'})
   }
