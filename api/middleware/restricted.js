@@ -18,11 +18,11 @@ module.exports = (req, res, next) => {
   if (!token) {
     return res.status(401).json({message:'token required'})
   }
-  JWT.verify(token, JWT_SECRET, (err, decodedToken) => {
+  JWT.verify(token, JWT_SECRET, (err, decoded) => {
     if (err) {
       return res.status(401).json({message:'token invalid'})
     } 
-req.decodedToken = decodedToken
+req.decodedjwt = decoded
 next()
   
   })
